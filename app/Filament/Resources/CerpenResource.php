@@ -24,15 +24,17 @@ class CerpenResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('user_name')
-                    ->label('User')
+                    ->label('Username')
                     ->default(fn() => auth()->user()->name)
                     ->disabled(),
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn() => auth()->id()),
                 Forms\Components\Textarea::make('judul')
+                    ->label('Judul Cerpen')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('keterangan')
+                    ->label('Isi Cerpen')
                     ->required()
                     ->columnSpanFull(),
             ]);
@@ -43,21 +45,25 @@ class CerpenResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label("User")
+                    ->label("Username")
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('judul')
+                    ->label("Judul Cerpen")
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('keterangan')
+                    ->label("Isi Cerpen")
                     ->searchable()
                     ->sortable()
                     ->limit(50)
                     ->tooltip(fn($record) => $record->keterangan),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label("Dibuat")
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label("Diedit")
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')

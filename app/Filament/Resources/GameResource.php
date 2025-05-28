@@ -24,13 +24,17 @@ class GameResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nama Game')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('keterangan')
+                    ->label('Deskripsi Game')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image'),
+                Forms\Components\FileUpload::make('image')
+                    ->label('Gambar'),
                 Forms\Components\TextInput::make('kategori')
+                    ->label('Kategori')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -41,19 +45,25 @@ class GameResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Game')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('keterangan')
+                    ->label('Deskripsi Game')
                     ->limit(50)
                     ->tooltip(fn($record) => $record->keterangan)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kategori')
+                    ->label('Kategori')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image')
+                    ->label('Gambar')
                     ->square(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label("Dibuat")
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label("Diedit")
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
