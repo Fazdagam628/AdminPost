@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->text("keterangan");
-            $table->text('image');
+            $table->text('image')->nullable();
             $table->string('kategori');
             $table->timestamps();
             $table->softDeletes();

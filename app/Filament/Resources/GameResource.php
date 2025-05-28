@@ -42,16 +42,20 @@ class GameResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->limit(50)
+                    ->tooltip(fn($record) => $record->keterangan)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('kategori')
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->square(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()

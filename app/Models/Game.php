@@ -15,7 +15,7 @@ class Game extends Model
      */
     protected $fillable = [
         'name',
-'keterangan',
+        'keterangan',
         'image',
         'kategori',
     ];
