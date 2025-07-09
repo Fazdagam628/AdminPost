@@ -12,12 +12,13 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class CerpenResource extends Resource
 {
     protected static ?string $model = Cerpen::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
     public static function form(Form $form): Form
     {
@@ -43,6 +44,13 @@ class CerpenResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $is_super_admin = Auth::user()->hasRole("super_admin");
+
+                if (!$is_super_admin) {
+                    $query->where('user_id', Auth::user()->id);
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->label("Username")
@@ -58,6 +66,9 @@ class CerpenResource extends Resource
                     ->sortable()
                     ->limit(50)
                     ->tooltip(fn($record) => $record->keterangan),
+                Tables\Columns\TextColumn::make('views')
+                    ->label('Dilihat')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("Dibuat")
                     ->dateTime()
@@ -76,6 +87,15 @@ class CerpenResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('buka')
+                    ->label('Lihat')
+                    ->icon('heroicon-m-eye')
+                    ->action(function (Cerpen $record) {
+                        $record->increment('views');
+                        return redirect()->route('filament.admin.resources.cerpens.view', ['record' => $record]);
+                    })
+                    ->color('success'),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -97,6 +117,7 @@ class CerpenResource extends Resource
             'index' => Pages\ListCerpens::route('/'),
             'create' => Pages\CreateCerpen::route('/create'),
             'edit' => Pages\EditCerpen::route('/{record}/edit'),
+            'view' => Pages\ViewCerpen::route('/{record}'),
         ];
     }
 }

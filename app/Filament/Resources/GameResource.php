@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -17,26 +18,120 @@ class GameResource extends Resource
 {
     protected static ?string $model = Game::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-puzzle-piece';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nama Game')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('keterangan')
-                    ->label('Deskripsi Game')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image')
-                    ->label('Gambar'),
-                Forms\Components\TextInput::make('kategori')
-                    ->label('Kategori')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Section::make('Game Information')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                // Kolom Kiri
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('image')
+                                            ->label('Game Cover')
+                                            ->image()
+                                            ->required()
+                                            ->directory('games/covers')
+                                            ->visibility('public')
+                                    ]),
+                                // Kolom kanan
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Game Title')
+                                            ->placeholder('Zenless Zone Zero')
+                                            ->required()
+                                            ->maxLength(255),
+                                        Forms\Components\Textarea::make('keterangan')
+                                            ->label('Game Description')
+                                            ->required()
+                                            ->placeholder('Jelaskan fitur, gameplay, atau storyline game ini...')
+                                            ->rows(5),
+                                        Forms\Components\TextInput::make('kategori')
+                                            ->label('Genre')
+                                            ->required()
+                                            ->placeholder('RPG,Adventure,Visual Novel')
+                                            ->maxLength(255),
+                                    ]),
+                            ])
+                    ]),
+                // SECTION: Gambar Screenshot
+                Forms\Components\Section::make('Preview Game')
+                    ->schema([
+                        Forms\Components\FileUpload::make('img_ss')
+                            ->label('Screenshot image')
+                            ->multiple()
+                            ->maxFiles(3)
+                            ->required()
+                            ->image()
+                            ->directory('games/preview')
+                            ->visibility('public')
+                            ->reorderable()
+                    ]),
+                // SECTION: Link & YouTube Preview
+                Forms\Components\Section::make('Video Preview And Download')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('youtube_preview')
+                                            ->label('YouTube Preview')
+                                            ->content(function ($state, $get) {
+                                                $url = $get('link_youtube');
+
+                                                if (preg_match('/(?:v=|be\/|embed\/)([a-zA-Z0-9_-]{11})/', $url, $matches)) {
+                                                    $videoId = $matches[1];
+                                                    return new \Illuminate\Support\HtmlString("
+                            <iframe width='100%' height='300' src='https://www.youtube.com/embed/{$videoId}'
+                            frameborder='0' allowfullscreen class='rounded-lg shadow-md'></iframe>
+                        ");
+                                                }
+
+                                                return 'Masukkan link YouTube untuk melihat preview.';
+                                            })
+                                            ->visible(fn($get) => filled($get('link_youtube')))
+                                            ->columnSpanFull(),
+                                        Forms\Components\TextInput::make('link_youtube')
+                                            ->label('YouTube Link')
+                                            ->required()
+                                            ->placeholder('Tempelkan URL video YouTube di sini')
+                                            ->reactive(),
+                                    ]),
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('preview_download')
+                                            ->label('Preview File Download')
+                                            ->visible(fn($get) => filled($get('link_download')))
+                                            ->content(function ($get) {
+                                                $link = $get('link_download');
+
+                                                // Cek apakah link berasal dari Google Drive
+                                                if (preg_match('/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/', $link, $matches)) {
+                                                    $fileId = $matches[1];
+                                                    $embedUrl = "https://drive.google.com/file/d/{$fileId}/preview";
+                                                    return new \Illuminate\Support\HtmlString("
+                <iframe src='{$embedUrl}' width='100%' height='300' frameborder='0' allow='autoplay'></iframe>
+            ");
+                                                }
+
+                                                // Bisa tambahkan kondisi untuk jenis link lain
+                                                return 'Preview tidak tersedia untuk link ini.';
+                                            })
+                                            ->columnSpanFull(),
+                                        Forms\Components\TextInput::make('link_download')
+                                            ->label('Link Download')
+                                            ->required()
+                                            ->placeholder('Tempelkan link Google Drive atau direct download')
+                                            ->reactive(), // Penting agar bisa dideteksi oleh Placeholder di bawah
+
+                                    ])
+                            ])
+                    ]),
             ]);
     }
 
@@ -58,6 +153,9 @@ class GameResource extends Resource
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Gambar')
                     ->square(),
+                Tables\Columns\TextColumn::make('views')
+                    ->label('Dilihat')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("Dibuat")
                     ->dateTime()
@@ -76,6 +174,14 @@ class GameResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('buka')
+                    ->label('Lihat')
+                    ->icon('heroicon-m-eye')
+                    ->action(function (Game $record) {
+                        $record->increment('views');
+                        return redirect()->route('filament.admin.resources.games.view', ['record' => $record]);
+                    })
+                    ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -97,6 +203,7 @@ class GameResource extends Resource
             'index' => Pages\ListGames::route('/'),
             'create' => Pages\CreateGame::route('/create'),
             'edit' => Pages\EditGame::route('/{record}/edit'),
+            'view' => Pages\ViewGame::route('/{record}'),
         ];
     }
 }
