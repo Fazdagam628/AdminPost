@@ -24,10 +24,9 @@ class CerpenResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_name')
+                Forms\Components\Hidden::make('user_name')
                     ->label('Username')
-                    ->default(fn() => auth()->user()->name)
-                    ->disabled(),
+                    ->default(fn() => auth()->user()->name),
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn() => auth()->id()),
                 Forms\Components\Textarea::make('judul')
