@@ -34,37 +34,8 @@
 <!-- Filter & Item List -->
 <section class="filter-section">
     <h2>Discover Item</h2>
-    <div class="filters">
-        <select>
-            <option>Category</option>
-        </select>
-        <select>
-            <option>Items</option>
-        </select>
-        <select>
-            <option>Status</option>
-        </select>
-        <select>
-            <option>Price Range</option>
-        </select>
-        <select>
-            <option>Sort By: Recently Added</option>
-        </select>
-    </div>
-    <div class="item-grid">
-        @forelse ($games as $game)
+    @livewire('game-filter')
 
-        <div class="item-card">
-            <a style="text-decoration:none; color:white;" href="{{ route('games.show', $game->id) }}">
-                <img src="{{ asset('/storage/'.$game->image) }}" alt="Art 5">
-                <p><strong>{{ $game->name }}</strong></p>
-                <small>Posted by: {{ $game->creator }}</small>
-            </a>
-        </div>
-        @empty
-
-        @endforelse
-    </div>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>

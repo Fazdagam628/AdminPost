@@ -18,9 +18,11 @@
         <div class="nft-properties">
             <h2>Kategori</h2>
             <div class="property-grid">
+                @foreach ($game->kategori as $item)
                 <div class="property-card">
-                    <strong>{{ $game->kategori }}</strong><br>
+                    <strong>{{ $item['kategori']}}</strong><br>
                 </div>
+                @endforeach
                 <!-- <div class="property-card">
                         <strong>Vehicle</strong><br>
                     </div>

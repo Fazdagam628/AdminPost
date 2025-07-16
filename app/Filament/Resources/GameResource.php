@@ -13,6 +13,8 @@ use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Actions\Action;
+
 
 class GameResource extends Resource
 {
@@ -56,11 +58,23 @@ class GameResource extends Resource
                                             ->required()
                                             ->placeholder('Jelaskan fitur, gameplay, atau storyline game ini...')
                                             ->rows(5),
-                                        Forms\Components\TextInput::make('kategori')
-                                            ->label('Genre')
+                                        Forms\Components\Repeater::make('kategori')
+                                            ->label('Game Kategori (Multiple)')
+                                            ->schema([
+                                                Forms\Components\Textarea::make('kategori')
+                                                    ->label('kategori')
+                                                    ->placeholder('Tulis kategori game...')
+                                                    ->rows(3)
+                                                    ->required(),
+                                            ])
+                                            ->defaultItems(1)
+                                            ->minItems(1)
+                                            ->maxItems(20)
+                                            ->addActionLabel('Tambah Kategori')
+                                            ->columnSpanFull()
+                                            ->default([['kategori' => '']])
                                             ->required()
-                                            ->placeholder('RPG,Adventure,Visual Novel')
-                                            ->maxLength(255),
+
                                     ]),
                             ])
                     ]),

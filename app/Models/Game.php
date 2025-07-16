@@ -27,6 +27,7 @@ class Game extends Model
     ];
 
     protected $casts = [
-        'img_ss' => 'array'
+        'img_ss' => 'array',
+        'kategori' => 'array', // tambahkan ini
     ];
 }

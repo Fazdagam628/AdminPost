@@ -11,6 +11,8 @@
     </main>
 
     @include('components.footer')
+    @livewireScripts
+
 </body>
 
 </html>
