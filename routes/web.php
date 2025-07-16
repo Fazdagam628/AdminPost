@@ -1,7 +1,14 @@
 <?php
 
+use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/login', function () {
+    return redirect('admin/login');
+})->name('login');
+Route::get('/administrator', function () {
     return redirect('/admin');
 });
+
+Route::resource('games', GameController::class);
+Route::get('/', [GameController::class, 'index'])->name('index.index');

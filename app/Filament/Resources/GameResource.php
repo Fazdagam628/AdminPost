@@ -46,6 +46,11 @@ class GameResource extends Resource
                                             ->placeholder('Zenless Zone Zero')
                                             ->required()
                                             ->maxLength(255),
+                                        Forms\Components\TextInput::make('creator')
+                                            ->label('Post By')
+                                            ->placeholder('Aruna')
+                                            ->required()
+                                            ->maxLength(255),
                                         Forms\Components\Textarea::make('keterangan')
                                             ->label('Game Description')
                                             ->required()
