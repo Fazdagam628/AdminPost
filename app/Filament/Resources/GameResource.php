@@ -65,6 +65,7 @@ class GameResource extends Resource
                                                     ->label('kategori')
                                                     ->placeholder('Tulis kategori game...')
                                                     ->rows(3)
+                                                    ->extraInputAttributes(['onInput' => 'this.value = this.value.toUpperCase()'])
                                                     ->required(),
                                             ])
                                             ->defaultItems(1)

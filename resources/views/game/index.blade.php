@@ -34,7 +34,35 @@
 <!-- Filter & Item List -->
 <section class="filter-section">
     <h2>Discover Item</h2>
-    @livewire('game-filter')
+    <div class="filters">
+        <form method="GET" action="{{ route('games.index') }}">
+            <!-- <label for="kategori">Filter berdasarkan kategori:</label> -->
+            <select name="kategori" id="kategori" onchange="this.form.submit()">
+                <option value="">Category</option>
+                @foreach ($allCategories as $category)
+                <option value="{{ $category }}" {{ request('kategori') == $category ? 'selected' : '' }}>
+                    {{ $category }}
+                </option>
+                @endforeach
+            </select>
+
+        </form>
+
+    </div>
+    <div class="item-grid">
+        @forelse ($games as $game)
+
+        <div class="item-card">
+            <a style="text-decoration:none; color:white;" href="{{ route('games.show', $game->id) }}">
+                <img src="{{ asset('/storage/'.$game->image) }}" alt="Art 5">
+                <p><strong>{{ $game->name }}</strong></p>
+                <small>Posted by: {{ $game->creator }}</small>
+            </a>
+        </div>
+        @empty
+
+        @endforelse
+    </div>
 
 </section>
 
