@@ -35,9 +35,8 @@
 <section class="filter-section">
     <h2>Discover Item</h2>
     <div class="filters">
-        <form method="GET" action="{{ route('games.index') }}">
-            <!-- <label for="kategori">Filter berdasarkan kategori:</label> -->
-            <select name="kategori" id="kategori" onchange="this.form.submit()">
+        <form id="filterForm" method="GET" action="{{ route('games.index') }}">
+            <select name="kategori" id="kategori">
                 <option value="">Category</option>
                 @foreach ($allCategories as $category)
                 <option value="{{ $category }}" {{ request('kategori') == $category ? 'selected' : '' }}>
@@ -45,9 +44,7 @@
                 </option>
                 @endforeach
             </select>
-
         </form>
-
     </div>
     <div class="item-grid">
         @forelse ($games as $game)
@@ -68,6 +65,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script>
+document.getElementById('kategori').addEventListener('change', function() {
+    const selectedValue = this.value;
+    if (selectedValue === '') {
+        // Redirect tanpa query string
+        window.location.href = "{{ route('games.index') }}";
+    } else {
+        // Submit form normal dengan query kategori
+        document.getElementById('filterForm').submit();
+    }
+});
+
 const swiper = new Swiper(".mySwiper", {
     slidesPerView: 3,
     spaceBetween: 30,
