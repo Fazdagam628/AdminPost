@@ -33,11 +33,12 @@
 
 <!-- Filter & Item List -->
 <section class="filter-section">
-    <h2>Discover Item</h2>
+    <h2>Explore Games</h2>
     <div class="filters">
         <form id="filterForm" method="GET" action="{{ route('games.index') }}">
             <select name="kategori" id="kategori">
-                <option value="">Category</option>
+                <option>Category</option>
+                <option value="">All Categories</option>
                 @foreach ($allCategories as $category)
                 <option value="{{ $category }}" {{ request('kategori') == $category ? 'selected' : '' }}>
                     {{ $category }}
@@ -65,34 +66,34 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script>
-document.getElementById('kategori').addEventListener('change', function() {
-    const selectedValue = this.value;
-    if (selectedValue === '') {
-        // Redirect tanpa query string
-        window.location.href = "{{ route('games.index') }}";
-    } else {
-        // Submit form normal dengan query kategori
-        document.getElementById('filterForm').submit();
-    }
-});
+    document.getElementById('kategori').addEventListener('change', function() {
+        const selectedValue = this.value;
+        if (selectedValue === '') {
+            // Redirect tanpa query string
+            window.location.href = "{{ route('games.index') }}";
+        } else {
+            // Submit form normal dengan query kategori
+            document.getElementById('filterForm').submit();
+        }
+    });
 
-const swiper = new Swiper(".mySwiper", {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    loop: true,
-    centeredSlides: true,
-    autoplay: {
-        delay: 2500,
-        disableOnInteraction: false
-    },
-    pagination: {
-        el: ".swiper-pagination",
-        clickable: true
-    },
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev"
-    }
-});
+    const swiper = new Swiper(".mySwiper", {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        loop: true,
+        centeredSlides: true,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev"
+        }
+    });
 </script>
 @endsection
