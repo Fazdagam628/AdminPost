@@ -12,3 +12,4 @@ Route::get('/administrator', function () {
 
 Route::resource('games', GameController::class);
 Route::get('/', [GameController::class, 'index'])->name('games.index');
+Route::get('game', [GameController::class, 'game'])->name('games.game');

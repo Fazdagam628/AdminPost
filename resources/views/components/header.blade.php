@@ -2,10 +2,18 @@
      <div class="logo">PPL<span>GIM</span></div>
      <nav>
          <ul>
-             <li><a href="{{ route('games.index') }}">Home</a></li>
-             <li><a href="#">Game</a></li>
-             <li><a href="#">Cerpen</a></li>
-             <li><a href="#">Contact</a></li>
+             <li>
+                 <x-nav-link href="{{ route('games.index') }}" :active="request()->is('/')">Home</x-nav-link>
+             </li>
+             <li>
+                 <x-nav-link href="{{ route('games.game') }}" :active="request()->is('game')">Game</x-nav-link>
+             </li>
+             <li>
+                 <x-nav-link href="#" :active="request()->is('cerpen')">Cerpen</x-nav-link>
+             </li>
+             <li>
+                 <x-nav-link href="#" :active="request()->is('contact')">Contact</x-nav-link>
+             </li>
          </ul>
      </nav>
  </header>

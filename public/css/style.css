@@ -1,3 +1,8 @@
+:root {
+    --primary: #d8ff3d;
+    --active: #b2d134ff;
+}
+
 body {
     margin: 0;
     background-color: #0e0e0e;
@@ -19,7 +24,7 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    color: #d8ff3d;
+    color: var(--primary);
     font-weight: bold;
     font-size: 1.5rem;
 }
@@ -37,11 +42,33 @@ nav ul {
 nav ul li a {
     color: white;
     text-decoration: none;
+    font-size: larger;
     font-weight: 500;
 }
 
+nav ul li .active {
+    color: var(--active);
+}
+
+nav ul li a:hover {
+    color: var(--primary)
+}
+
+nav ul li a::after {
+    content: '';
+    display: block;
+    padding-bottom: .5rem;
+    border-bottom: .1rem solid var(--primary);
+    transform: scaleX(0);
+    transition: .2s linear;
+}
+
+nav ul li a:hover::after {
+    transform: scaleX(.5);
+}
+
 .wallet-button {
-    background: #d8ff3d;
+    background: var(--primary);
     padding: 0.5rem 1rem;
     border-radius: 10px;
     color: #111;
@@ -85,7 +112,7 @@ nav ul li a {
 }
 
 .btn-yellow {
-    background-color: #d8ff3d;
+    background-color: var(--primary);
     color: #111;
 }
 
@@ -138,7 +165,7 @@ nav ul li a {
 }
 
 .swiper-pagination-bullet-active {
-    background: #d8ff3d;
+    background: var(--primary);
     opacity: 1;
 }
 
@@ -228,7 +255,7 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    color: #d8ff3d;
+    color: var(--primary);
     font-weight: bold;
     font-size: 1.5rem;
 }
@@ -252,7 +279,7 @@ nav ul li a {
 }
 
 .wallet-button {
-    background: #d8ff3d;
+    background: var(--primary);
     padding: 0.5rem 1rem;
     border-radius: 10px;
     color: #111;
@@ -268,7 +295,8 @@ nav ul li a {
     align-items: center;
 }
 
-.container {
+.container,
+.container-info {
     max-width: 1200px;
     margin: auto;
     padding: 2rem;
@@ -276,6 +304,16 @@ nav ul li a {
     flex-wrap: wrap;
     gap: 2rem;
 }
+
+.container-info {
+    background: #1a1a1a;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+    max-width: 1300px;
+}
+
 
 .nft-image {
     flex: 1 1 45%;
@@ -315,7 +353,7 @@ nav ul li a {
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 8px;
-    background: #d8ff3d;
+    background: var(--primary);
     color: #111;
     font-weight: bold;
     cursor: pointer;
@@ -450,5 +488,5 @@ nav ul li a {
 }
 
 .footer-right a:hover {
-    color: #d8ff3d;
+    color: var(--primary);
 }

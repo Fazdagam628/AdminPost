@@ -31,69 +31,40 @@
     <div class="swiper-button-next"></div>
 </div>
 
-<!-- Filter & Item List -->
-<section class="filter-section">
-    <h2>Explore Games</h2>
-    <div class="filters">
-        <form id="filterForm" method="GET" action="{{ route('games.index') }}">
-            <select name="kategori" id="kategori">
-                <option>Category</option>
-                <option value="">All Categories</option>
-                @foreach ($allCategories as $category)
-                <option value="{{ $category }}" {{ request('kategori') == $category ? 'selected' : '' }}>
-                    {{ $category }}
-                </option>
-                @endforeach
-            </select>
-        </form>
+<div class="container-info">
+    <div class="nft-image">
+        <img src="{{ asset('/img/Smk-11-smg.png')  }}" alt="NFT Preview">
     </div>
-    <div class="item-grid">
-        @forelse ($games as $game)
-
-        <div class="item-card">
-            <a style="text-decoration:none; color:white;" href="{{ route('games.show', $game->id) }}">
-                <img src="{{ asset('/storage/'.$game->image) }}" alt="Art 5">
-                <p><strong>{{ $game->name }}</strong></p>
-                <small>Posted by: {{ $game->creator }}</small>
-            </a>
+    <div class="nft-details">
+        <h1>SMKN 11 Semarang</h1>
+        <div class="nft-description">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam excepturi, iste quibusdam adipisci iusto,
+            quasi nihil veniam, totam deleniti modi obcaecati ipsam aperiam quaerat praesentium magnam necessitatibus
+            asperiores nemo quisquam eveniet neque ratione quas. Asperiores officiis est quas dolore impedit nam
+            incidunt eos vel iusto voluptatibus ea, id non ad.
         </div>
-        @empty
-
-        @endforelse
     </div>
-
-</section>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script>
-    document.getElementById('kategori').addEventListener('change', function() {
-        const selectedValue = this.value;
-        if (selectedValue === '') {
-            // Redirect tanpa query string
-            window.location.href = "{{ route('games.index') }}";
-        } else {
-            // Submit form normal dengan query kategori
-            document.getElementById('filterForm').submit();
-        }
-    });
-
-    const swiper = new Swiper(".mySwiper", {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        loop: true,
-        centeredSlides: true,
-        autoplay: {
-            delay: 2500,
-            disableOnInteraction: false
-        },
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev"
-        }
-    });
+const swiper = new Swiper(".mySwiper", {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    loop: true,
+    centeredSlides: true,
+    autoplay: {
+        delay: 2500,
+        disableOnInteraction: false
+    },
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev"
+    }
+});
 </script>
 @endsection

@@ -14,6 +14,13 @@ class GameController extends Controller
 {
     public function index(Request $request)
     {
+        // Ambil semua kategori unik dari seluruh game
+        $games = Game::latest()->get();
+
+        return view('game.index', compact('games'));
+    }
+    public function game(Request $request)
+    {
         $selectedCategory = $request->input('kategori');
 
         // Ambil semua game
@@ -35,7 +42,7 @@ class GameController extends Controller
             ->unique()
             ->values();
 
-        return view('game.index', compact('games', 'allCategories', 'selectedCategory'));
+        return view('game.game', compact('games', 'allCategories', 'selectedCategory'));
     }
 
 
