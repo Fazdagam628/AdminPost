@@ -32,20 +32,49 @@
 
         @endforelse
     </div>
+    @php
+    $currentPage = $games->currentPage();
+    $lastPage = $games->lastPage();
+    $nextPage = null;
+    $prevPage = null;
+
+    $nextPage = null;
+    $prevPage = null;
+
+    if ($currentPage < $lastPage) { $nextPage=$currentPage + 1; } if ($currentPage> 1) {
+        $prevPage = $currentPage - 1;
+        }
+        $query = request()->query();
+        @endphp
+
+        <div class="buttons-pagination" style="display: flex; gap: 1rem; justify-content:center;">
+            @if ($prevPage)
+            <a href="{{ route('games.game', array_merge($query, ['page' => $prevPage])) }}" class="btn-white">⬅
+                Previous</a>
+            @endif
+
+            @if ($nextPage)
+            <a href="{{ route('games.game', array_merge($query, ['page' => $nextPage])) }}" class="btn-yellow">Next
+                ➡</a>
+            @endif
+        </div>
 
 </section>
+<p style="text-align: center; margin-top: 1rem;">
+    Page {{ $games->currentPage() }} of {{ $games->lastPage() }}
+</p>
 
 <script>
-document.getElementById('kategori').addEventListener('change', function() {
-    const selectedValue = this.value;
-    if (selectedValue === '') {
-        // Redirect tanpa query string
-        window.location.href = "{{ route('games.game') }}";
-    } else {
-        // Submit form normal dengan query kategori
-        document.getElementById('filterForm').submit();
-    }
-});
+    document.getElementById('kategori').addEventListener('change', function() {
+        const selectedValue = this.value;
+        if (selectedValue === '') {
+            // Redirect tanpa query string
+            window.location.href = "{{ route('games.game') }}";
+        } else {
+            // Submit form normal dengan query kategori
+            document.getElementById('filterForm').submit();
+        }
+    });
 </script>
 
 @endsection

@@ -1,5 +1,5 @@
  <header>
-     <div class="logo">PPL<span>GIM</span></div>
+     <div class="logo"><a href="{{ route('games.index') }}" style="text-decoration: none;">PPL<span>GIM</span></a></div>
      <nav>
          <ul>
              <li>

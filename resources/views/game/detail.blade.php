@@ -9,6 +9,7 @@
     <div class="nft-details">
         <h1>{{ $game->name }}</h1>
         <div class="nft-meta">Posted by: {{ $game->creator }}</div>
+        <div class="nft-meta">View: {{ $game->views }}</div>
         <div class="nft-actions">
             <a href="{{ $game->link_download }}" target="_blank"><button>Download</button></a>
         </div>

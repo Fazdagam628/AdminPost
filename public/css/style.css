@@ -10,6 +10,10 @@ body {
     color: white;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -24,9 +28,12 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    color: var(--primary);
     font-weight: bold;
     font-size: 1.5rem;
+}
+
+.logo a {
+    color: var(--primary);
 }
 
 .logo span {
@@ -100,10 +107,15 @@ nav ul li a:hover::after {
 }
 
 .buttons {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
 }
 
-.buttons a {
+.buttons-pagination {
+    margin-top: 2.5rem;
+}
+
+.buttons a,
+.buttons-pagination a {
     padding: 0.75rem 1.5rem;
     margin: 0 0.5rem;
     border-radius: 8px;
