@@ -29,6 +29,9 @@
             </a>
         </div>
         @empty
+        <div class="item-card">
+                <p><strong>Game not found</strong></p>
+        </div>
 
         @endforelse
     </div>
