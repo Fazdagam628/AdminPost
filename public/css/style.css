@@ -307,13 +307,16 @@ nav ul li a {
     align-items: center;
 }
 
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .container,
 .container-info {
     max-width: 1200px;
     margin: auto;
     padding: 2rem;
-    display: flex;
-    flex-wrap: wrap;
     gap: 2rem;
 }
 
@@ -353,6 +356,7 @@ nav ul li a {
 
 .nft-description {
     margin-top: 1.5rem;
+    text-align: center;
     line-height: 1.6;
     color: #ccc;
 }
