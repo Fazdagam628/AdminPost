@@ -3,7 +3,7 @@
      <nav>
          <ul>
              <li>
-                 <x-nav-link href="{{ route('games.index') }}" :active="request()->is('/')">Home</x-nav-link>
+                 <x-nav-link href="{{ route('games.index') }}" :active="request()->is('games')">Home</x-nav-link>
              </li>
              <li>
                  <x-nav-link href="{{ route('games.game') }}" :active="request()->is('game')">Game</x-nav-link>

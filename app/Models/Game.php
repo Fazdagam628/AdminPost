@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class Game extends Model
 {
-
     use HasFactory, SoftDeletes;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+
     protected $fillable = [
         'name',
+        'slug',
         'creator',
         'keterangan',
         'image',
@@ -28,6 +25,26 @@ class Game extends Model
 
     protected $casts = [
         'img_ss' => 'array',
-        'kategori' => 'array', // tambahkan ini
+        'kategori' => 'array',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($game) {
+            $game->slug = Str::slug($game->name);
+        });
+
+        static::updating(function ($game) {
+            if ($game->isDirty('name')) {
+                $game->slug = Str::slug($game->name);
+            }
+        });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

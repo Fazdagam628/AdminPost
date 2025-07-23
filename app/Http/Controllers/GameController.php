@@ -41,17 +41,15 @@ class GameController extends Controller
         return view('game.game', compact('games', 'allCategories', 'selectedCategory'));
     }
 
-    public function show(string $id): View
+    public function show(Game $game): View
     {
-        $game = Game::findOrFail($id);
-
-        // Cek apakah game ini sudah pernah dilihat dalam sesi ini
-        $viewKey = 'viewed_game_' . $id;
+        $viewKey = 'viewed_game_' . $game->id;
 
         if (!Session::has($viewKey)) {
             $game->increment('views');
             Session::put($viewKey, true);
         }
+
         return view('game.detail', compact('game'));
     }
 }

@@ -22,7 +22,7 @@
         @forelse ($games as $game)
 
         <div class="item-card">
-            <a style="text-decoration:none; color:white;" href="{{ route('games.show', $game->id) }}">
+            <a style="text-decoration:none; color:white;" href="{{ route('games.show', $game) }}">
                 <img src="{{ asset('/storage/'.$game->image) }}" alt="Art 5">
                 <p><strong>{{ $game->name }}</strong></p>
                 <small>Posted by: {{ $game->creator }}</small>
@@ -30,7 +30,7 @@
         </div>
         @empty
         <div class="item-card">
-                <p><strong>Game not found</strong></p>
+            <p><strong>Game not found</strong></p>
         </div>
 
         @endforelse

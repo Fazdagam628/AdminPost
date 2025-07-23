@@ -18,7 +18,7 @@
     <div class="swiper-wrapper">
         @forelse ($games as $game)
         <div class="swiper-slide">
-            <a href="{{ route('games.show', $game->id) }}">
+            <a href="{{ route('games.show', $game) }}">
                 <img src="{{ asset('/storage/'.$game->image) }}" />
                 <p>{{ $game->name }}<br> </p>
             </a>
@@ -38,7 +38,7 @@
         </div>
         <div class="nft-details">
             <h1 style="text-align: center;">SMKN 11 Semarang</h1>
-            <div class="nft-description">
+            <div class="nft-description" style="text-align: center;">
                 <p>
                     Sekolah ini berdiri tahun 1990 dengan nama SMT Negeri Grafika Semarang, sesuai Kepmendikbud No.
                     0389/0/1990 diresmikan pada hari Sabtu Pahing, tanggal 23 Mei 1992 dan berdasarkan Keputusan
