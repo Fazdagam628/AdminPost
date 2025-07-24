@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CerpenController;
 use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,7 +12,8 @@ Route::get('/administrator', function () {
 });
 
 Route::get('/', [GameController::class, 'index'])->name('games.index');
-Route::get('/game', [GameController::class, 'game'])->name('games.game');
+Route::get('/games', [GameController::class, 'game'])->name('games.game');
 Route::get('/games/{game:slug}', [GameController::class, 'show'])->name('games.show');
 
-Route::resource('games', GameController::class);
+Route::get('/cerpen', [CerpenController::class, 'index'])->name('cerpen.index');
+Route::get('/cerpen/{cerpen:slug}', [CerpenController::class, 'show'])->name('cerpen.show');

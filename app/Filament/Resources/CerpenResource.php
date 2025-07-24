@@ -31,8 +31,12 @@ class CerpenResource extends Resource
                     ->default(fn() => auth()->id()),
                 Forms\Components\Textarea::make('judul')
                     ->label('Judul Cerpen')
-                    ->required()
+                    ->required()->live(onBlur: true)
+                    ->afterStateUpdated(fn($state, callable $set) => $set('slug', \Str::slug($state)))
                     ->columnSpanFull(),
+                Forms\Components\TextInput::make('slug')
+                    ->readOnly()
+                    ->required(),
                 Forms\Components\Textarea::make('keterangan')
                     ->label('Isi Cerpen')
                     ->required()

@@ -68,16 +68,16 @@
 </p>
 
 <script>
-    document.getElementById('kategori').addEventListener('change', function() {
-        const selectedValue = this.value;
-        if (selectedValue === '') {
-            // Redirect tanpa query string
-            window.location.href = "{{ route('games.game') }}";
-        } else {
-            // Submit form normal dengan query kategori
-            document.getElementById('filterForm').submit();
-        }
-    });
+document.getElementById('kategori').addEventListener('change', function() {
+    const selectedValue = this.value;
+    if (selectedValue === '') {
+        // Redirect tanpa query string
+        window.location.href = "{{ route('games.game') }}";
+    } else {
+        // Submit form normal dengan query kategori
+        document.getElementById('filterForm').submit();
+    }
+});
 </script>
 
 @endsection
