@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('games', function (Blueprint $table) {
             //
-            $table->string('slug')->unique();
+            if (!Schema::hasColumn('games', 'slug')) {
+                $table->string('slug')->unique()->after('name');
+            }
         });
     }
 

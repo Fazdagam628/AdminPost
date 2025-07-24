@@ -49,6 +49,9 @@ class GameResource extends Resource
                                             ->required()->live(onBlur: true)
                                             ->afterStateUpdated(fn($state, callable $set) => $set('slug', \Str::slug($state)))
                                             ->maxLength(255),
+                                        Forms\Components\TextInput::make('slug')
+                                            ->readOnly()
+                                            ->required(),
                                         Forms\Components\TextInput::make('creator')
                                             ->label('Post By')
                                             ->placeholder('Aruna')
