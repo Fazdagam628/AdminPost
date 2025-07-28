@@ -11,8 +11,22 @@ class CerpenController extends Controller
 {
     public function index(Request $request)
     {
+        $search = $request->input('search');
+        $cerpensQuery = Cerpen::query();
+        if ($search) {
+            // Ubah input ke uppercase
+            $search = strtoupper($search);
+
+            // case-insensitive search menggunakan UPPER() untuk semua kolom
+            $cerpensQuery->where(function ($q) use ($search) {
+                $q->whereHas('user', function ($query) use ($search) {
+                    $query->whereRaw('UPPER(name) LIKE ?', ["%$search%"]);
+                })
+                    ->orWhereRaw('UPPER(judul) LIKE ?', ["%$search%"]);
+            });
+        }
         // Ambil sekitar 10 data cerpen
-        $cerpens = Cerpen::latest()->paginate(10);
+        $cerpens = $cerpensQuery->latest()->paginate(10)->appends($request->query());
 
         return view('cerpen.index', compact('cerpens'));
     }

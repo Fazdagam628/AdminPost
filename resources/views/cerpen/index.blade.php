@@ -3,12 +3,26 @@
 edukatif, kreatif, dan inovatif.')
 
 @section('content')
+<!-- Search Form -->
+<div class="hero-search">
+    <form action="{{ route('cerpen.index') }}" method="GET" class="search-form">
+        <i data-feather="search" class="search-icon"></i>
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search" id="searchInput"
+            autocomplete="off">
+        <!-- Tombol reset pencarian -->
+        <button type="button" id="resetButton" class="reset-button" title="Reset search" style="display: none;">
+            <i data-feather="x"></i>
+        </button>
+
+    </form>
+</div>
 @forelse ($cerpens as $cerpen)
 <div class="container-info">
     <div class="nft-details">
         <h1>{{ $cerpen->judul }}</h1>
     </div>
     <div class="nft-description">
+        <small>{{ $cerpen->user->name }}</small>
         <p> {{ Str::limit($cerpen['keterangan'], 150) }}</p>
         <a href="{{ route('cerpen.show',$cerpen) }}">Ke Post</a>
     </div>
@@ -43,3 +57,43 @@ if($currentpage < $lastPage) { $nextPage=$currentpage + 1; } if ($currentpage> 1
         Page {{ $cerpens->currentPage() }} of {{ $cerpens->lastPage() }}
     </p>
     @endsection
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const searchInput = document.getElementById('searchInput');
+        const resetButton = document.getElementById('resetButton');
+        const kategoriSelect = document.getElementById('kategori');
+        const form = document.getElementById('filterForm');
+
+
+
+        // Tampilkan tombol reset saat input difokuskan dan ada isinya
+        function toggleResetButton() {
+            if (searchInput === document.activeElement || searchInput.value.trim() !== '') {
+                resetButton.style.display = 'flex';
+            } else {
+                resetButton.style.display = 'none';
+            }
+        }
+
+        searchInput.addEventListener('focus', toggleResetButton);
+        searchInput.addEventListener('input', toggleResetButton);
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (searchInput.value.trim() === '') {
+                    resetButton.style.display = 'none';
+                }
+            }, 100);
+        });
+
+        resetButton.addEventListener('click', () => {
+            searchInput.value = '';
+            form.submit(); // kirim form ulang tanpa input pencarian
+        });
+
+        // Auto-submit saat kategori dipilih
+        kategoriSelect?.addEventListener('change', () => {
+            form.submit();
+        });
+    });
+    </script>
