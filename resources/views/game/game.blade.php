@@ -1,14 +1,25 @@
 @extends('layouts.app')
-
+@section('meta_description', 'Eksplor lebih jauh tentang koleksi game dari siswa PPLG')
 @section('content')
 
 <!-- Filter & Item List -->
 <section class="filter-section">
-    <h2>Explore Games</h2>
-    <div class="filters">
-        <form id="filterForm" method="GET" action="{{ route('games.game') }}">
+    <form action="{{ route('games.game') }}" method="GET" id="filterForm">
+        <div class="hero-search game">
+            <div class="search-form">
+                <i data-feather="search" class="search-icon"></i>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search" id="searchInput"
+                    autocomplete="off">
+                <!-- Tombol reset pencarian -->
+                <button type="button" id="resetButton" class="reset-button" title="Reset search" style="display: none;">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+        </div>
+        <h2>Explore Games</h2>
+        <div class=" filters">
             <select name="kategori" id="kategori">
-                <option>Category</option>
+                <option value="">Category</option>
                 <option value="">All Categories</option>
                 @foreach ($allCategories as $category)
                 <option value="{{ $category }}" {{ request('kategori') == $category ? 'selected' : '' }}>
@@ -16,14 +27,14 @@
                 </option>
                 @endforeach
             </select>
-        </form>
+    </form>
     </div>
     <div class="item-grid">
         @forelse ($games as $game)
 
         <div class="item-card">
             <a style="text-decoration:none; color:white;" href="{{ route('games.show', $game) }}">
-                <img src="{{ asset('/storage/'.$game->image) }}" alt="Art 5">
+                <img src="{{ asset('/storage/'.$game->image) }}" alt="{{ $game->name }}">
                 <p><strong>{{ $game->name }}</strong></p>
                 <small>Posted by: {{ $game->creator }}</small>
             </a>
@@ -68,15 +79,43 @@
 </p>
 
 <script>
-document.getElementById('kategori').addEventListener('change', function() {
-    const selectedValue = this.value;
-    if (selectedValue === '') {
-        // Redirect tanpa query string
-        window.location.href = "{{ route('games.game') }}";
-    } else {
-        // Submit form normal dengan query kategori
-        document.getElementById('filterForm').submit();
+document.addEventListener('DOMContentLoaded', () => {
+
+    const searchInput = document.getElementById('searchInput');
+    const resetButton = document.getElementById('resetButton');
+    const kategoriSelect = document.getElementById('kategori');
+    const form = document.getElementById('filterForm');
+
+
+
+    // Tampilkan tombol reset saat input difokuskan dan ada isinya
+    function toggleResetButton() {
+        if (searchInput === document.activeElement || searchInput.value.trim() !== '') {
+            resetButton.style.display = 'flex';
+        } else {
+            resetButton.style.display = 'none';
+        }
     }
+
+    searchInput.addEventListener('focus', toggleResetButton);
+    searchInput.addEventListener('input', toggleResetButton);
+    searchInput.addEventListener('blur', () => {
+        setTimeout(() => {
+            if (searchInput.value.trim() === '') {
+                resetButton.style.display = 'none';
+            }
+        }, 100);
+    });
+
+    resetButton.addEventListener('click', () => {
+        searchInput.value = '';
+        form.submit(); // kirim form ulang tanpa input pencarian
+    });
+
+    // Auto-submit saat kategori dipilih
+    kategoriSelect?.addEventListener('change', () => {
+        form.submit();
+    });
 });
 </script>
 

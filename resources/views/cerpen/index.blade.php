@@ -1,4 +1,6 @@
 @extends('layouts.app')
+@section('meta_description', 'World of Top Works – Temukan cerpen terbaik hasil karya siswa SMKN 11 Semarang. Cerpen
+edukatif, kreatif, dan inovatif.')
 
 @section('content')
 @forelse ($cerpens as $cerpen)

@@ -3,10 +3,18 @@
     --active: #b2d134ff;
 }
 
+body,
+input,
+textarea,
+select,
+option,
+button {
+    font-family: 'Open Sans', sans-serif;
+}
+
 body {
     margin: 0;
     background-color: #0e0e0e;
-    font-family: 'Segoe UI', sans-serif;
     color: white;
 }
 
@@ -54,11 +62,11 @@ nav ul li a {
 }
 
 nav ul li .active {
-    color: var(--active);
+    color: var(--primary);
 }
 
 nav ul li a:hover {
-    color: var(--primary)
+    color: var(--active)
 }
 
 nav ul li a::after {
@@ -94,6 +102,12 @@ nav ul li a:hover::after {
 .hero {
     text-align: center;
     padding: 80px 20px 40px;
+    /* background-image: url('/img/grafika.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    mask-image: linear-gradient(rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0)); */
 }
 
 .hero h1 {
@@ -104,6 +118,66 @@ nav ul li a:hover::after {
 .hero p {
     font-size: 1.2rem;
     color: #aaa;
+}
+
+.hero-search {
+    display: flex;
+    justify-content: center;
+    margin-top: 3.8rem;
+}
+
+.hero-search.game {
+    margin-top: 0;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    padding: 0.75rem 1.5rem;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+}
+
+.search-form:hover {
+    box-shadow: 0 8px 40px rgba(255, 255, 255, 0.1);
+}
+
+.search-form input[type="text"] {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+}
+
+.search-icon {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    color: var(--primary);
+}
+
+.reset-button {
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
 }
 
 .buttons {
@@ -123,14 +197,24 @@ nav ul li a:hover::after {
     font-weight: bold;
 }
 
+
+
 .btn-yellow {
     background-color: var(--primary);
     color: #111;
 }
 
+.btn-yellow:hover {
+    background-color: var(--active);
+}
+
 .btn-white {
     background-color: white;
     color: #000;
+}
+
+.btn-white:hover {
+    background-color: #ddd;
 }
 
 .swiper {
@@ -248,7 +332,6 @@ nav ul li a:hover::after {
 body {
     background-color: #0e0e0e;
     color: #fff;
-    font-family: 'Segoe UI', sans-serif;
     margin: 0;
     padding: 0;
 }

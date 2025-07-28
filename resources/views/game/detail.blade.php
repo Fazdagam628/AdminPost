@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('meta_description', 'Detail lengkap game: '.$game->name. ' Views : '.$game->views)
 @section('content')
 
 <div class="container">

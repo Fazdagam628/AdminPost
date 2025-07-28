@@ -24,14 +24,27 @@ class GameController extends Controller
     public function game(Request $request)
     {
         $selectedCategory = $request->input('kategori');
+        $search = $request->input('search');
 
         $gamesQuery = Game::query();
+
+        if ($search) {
+            // Ubah input ke uppercase
+            $search = strtoupper($search);
+
+            // Case-insensitive search menggunakan UPPER() untuk semua kolom
+            $gamesQuery->where(function ($q) use ($search) {
+                $q->whereRaw('UPPER(name) LIKE ?', ["%$search%"])
+                    ->orWhereRaw('UPPER(creator) LIKE ?', ["%$search%"])
+                    ->orWhereRaw('JSON_SEARCH(UPPER(JSON_EXTRACT(kategori, "$[*].kategori")), "one", ?) IS NOT NULL', [$search]);
+            });
+        }
 
         if ($selectedCategory) {
             $gamesQuery->whereJsonContains('kategori', ['kategori' => $selectedCategory]);
         }
 
-        $games = $gamesQuery->latest()->paginate(12)->appends($request->query()); // <- Penting agar query kategori tetap ada
+        $games = $gamesQuery->latest()->paginate(12)->appends($request->query());
 
         $allCategories = Game::select('kategori')->get()
             ->flatMap(fn($game) => collect($game->kategori)->pluck('kategori'))
@@ -40,6 +53,7 @@ class GameController extends Controller
 
         return view('game.game', compact('games', 'allCategories', 'selectedCategory'));
     }
+
 
     public function show(Game $game): View
     {

@@ -1,5 +1,6 @@
 @extends('layouts.app')
-
+@section('meta_description', 'World of Top Works – Temukan game terbaik hasil karya siswa SMKN 11 Semarang. Game
+edukatif, kreatif, dan inovatif.')
 @section('content')
 
 
@@ -11,6 +12,19 @@
         <a href="#container-info" class="btn-yellow">Discover More ↗</a>
         <a href="{{ route('games.game') }}" class="btn-white">All Collections ↗</a>
     </div>
+    <!-- Search Form -->
+    <div class="hero-search">
+        <form action="{{ route('games.game') }}" method="GET" class="search-form">
+            <i data-feather="search" class="search-icon"></i>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search" id="searchInput"
+                autocomplete="off">
+            <!-- Tombol reset pencarian -->
+            <button type="button" id="resetButton" class="reset-button" title="Reset search" style="display: none;">
+                <i data-feather="x"></i>
+            </button>
+
+        </form>
+    </div>
 </div>
 
 <!-- Swiper -->
@@ -19,7 +33,7 @@
         @forelse ($games as $game)
         <div class="swiper-slide">
             <a href="{{ route('games.show', $game) }}">
-                <img src="{{ asset('/storage/'.$game->image) }}" />
+                <img src="{{ asset('/storage/'.$game->image) }}" alt="{{ $game->name }}" />
                 <p>{{ $game->name }}<br> </p>
             </a>
         </div>
@@ -70,23 +84,56 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script>
-    const swiper = new Swiper(".mySwiper", {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        loop: true,
-        centeredSlides: true,
-        autoplay: {
-            delay: 2500,
-            disableOnInteraction: false
-        },
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev"
+const swiper = new Swiper(".mySwiper", {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    loop: true,
+    centeredSlides: true,
+    autoplay: {
+        delay: 2500,
+        disableOnInteraction: false
+    },
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev"
+    }
+});
+document.addEventListener('DOMContentLoaded', () => {
+
+    const searchInput = document.getElementById('searchInput');
+    const resetButton = document.getElementById('resetButton');
+    const form = document.getElementById('filterForm');
+
+
+
+    // Tampilkan tombol reset saat input difokuskan dan ada isinya
+    function toggleResetButton() {
+        if (searchInput === document.activeElement || searchInput.value.trim() !== '') {
+            resetButton.style.display = 'flex';
+        } else {
+            resetButton.style.display = 'none';
         }
+    }
+
+    searchInput.addEventListener('focus', toggleResetButton);
+    searchInput.addEventListener('input', toggleResetButton);
+    searchInput.addEventListener('blur', () => {
+        setTimeout(() => {
+            if (searchInput.value.trim() === '') {
+                resetButton.style.display = 'none';
+            }
+        }, 100);
     });
+
+    resetButton.addEventListener('click', () => {
+        searchInput.value = '';
+        form.submit(); // kirim form ulang tanpa input pencarian
+    });
+
+});
 </script>
 @endsection
