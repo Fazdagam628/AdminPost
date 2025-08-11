@@ -82,7 +82,8 @@ edukatif, kreatif, dan inovatif.')
     </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
 const swiper = new Swiper(".mySwiper", {
     slidesPerView: 3,

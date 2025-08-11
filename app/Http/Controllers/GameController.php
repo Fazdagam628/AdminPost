@@ -26,7 +26,7 @@ class GameController extends Controller
         $selectedCategory = $request->input('kategori');
         $search = $request->input('search');
 
-        $gamesQuery = Game::query();
+        $gamesQuery = Game::query()->latest();
 
         if ($search) {
             // Ubah input ke uppercase
@@ -49,6 +49,7 @@ class GameController extends Controller
         $allCategories = Game::select('kategori')->get()
             ->flatMap(fn($game) => collect($game->kategori)->pluck('kategori'))
             ->unique()
+            ->sort()
             ->values();
 
         return view('game.game', compact('games', 'allCategories', 'selectedCategory'));
