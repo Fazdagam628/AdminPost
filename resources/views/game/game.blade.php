@@ -79,44 +79,80 @@
 </p>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
 
-    const searchInput = document.getElementById('searchInput');
-    const resetButton = document.getElementById('resetButton');
-    const kategoriSelect = document.getElementById('kategori');
-    const form = document.getElementById('filterForm');
+        const searchInput = document.getElementById('searchInput');
+        const resetButton = document.getElementById('resetButton');
+        const kategoriSelect = document.getElementById('kategori');
+        const form = document.getElementById('filterForm');
 
 
+        const cards = document.querySelectorAll('.item-card');
 
-    // Tampilkan tombol reset saat input difokuskan dan ada isinya
-    function toggleResetButton() {
-        if (searchInput === document.activeElement || searchInput.value.trim() !== '') {
-            resetButton.style.display = 'flex';
-        } else {
-            resetButton.style.display = 'none';
-        }
-    }
+        cards.forEach((card, index) => {
+            // Fade-in stagger otomatis
+            card.style.animation = `fadeInUp 0.6s ease forwards`;
+            card.style.animationDelay = `${index * 0.15}s`;
 
-    searchInput.addEventListener('focus', toggleResetButton);
-    searchInput.addEventListener('input', toggleResetButton);
-    searchInput.addEventListener('blur', () => {
-        setTimeout(() => {
-            if (searchInput.value.trim() === '') {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * 5;
+                const rotateY = ((x - centerX) / centerX) * -5;
+
+                // Arah bayangan mengikuti rotasi
+                const shadowX = (x - centerX) / 8;
+                const shadowY = (y - centerY) / 8;
+
+                // Highlight dinamis
+                const lightX = (x / rect.width) * 100;
+                const lightY = (y / rect.height) * 100;
+
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+                card.style.boxShadow = `${-shadowX}px ${shadowY}px 25px rgba(0, 0, 0, 0.5)`;
+                card.style.background = `radial-gradient(circle at ${lightX}% ${lightY}%, rgba(255,255,255,0.05), #1a1a1a)`;
+            });
+
+            // Reset saat mouse keluar
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+                card.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.4)';
+                card.style.background = 'linear-gradient(145deg, #1a1a1a, #161616)';
+            });
+        });
+        // Tampilkan tombol reset saat input difokuskan dan ada isinya
+        function toggleResetButton() {
+            if (searchInput === document.activeElement || searchInput.value.trim() !== '') {
+                resetButton.style.display = 'flex';
+            } else {
                 resetButton.style.display = 'none';
             }
-        }, 100);
-    });
+        }
 
-    resetButton.addEventListener('click', () => {
-        searchInput.value = '';
-        form.submit(); // kirim form ulang tanpa input pencarian
-    });
+        searchInput.addEventListener('focus', toggleResetButton);
+        searchInput.addEventListener('input', toggleResetButton);
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (searchInput.value.trim() === '') {
+                    resetButton.style.display = 'none';
+                }
+            }, 100);
+        });
 
-    // Auto-submit saat kategori dipilih
-    kategoriSelect?.addEventListener('change', () => {
-        form.submit();
+        resetButton.addEventListener('click', () => {
+            searchInput.value = '';
+            form.submit(); // kirim form ulang tanpa input pencarian
+        });
+
+        // Auto-submit saat kategori dipilih
+        kategoriSelect?.addEventListener('change', () => {
+            form.submit();
+        });
     });
-});
 </script>
 
 @endsection

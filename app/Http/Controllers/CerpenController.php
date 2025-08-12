@@ -26,7 +26,7 @@ class CerpenController extends Controller
             });
         }
         // Ambil sekitar 10 data cerpen
-        $cerpens = $cerpensQuery->latest()->paginate(10)->appends($request->query());
+        $cerpens = $cerpensQuery->latest()->paginate(5)->appends($request->query());
 
         return view('cerpen.index', compact('cerpens'));
     }

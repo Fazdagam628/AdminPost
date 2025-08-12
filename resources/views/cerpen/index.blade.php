@@ -19,12 +19,11 @@ edukatif, kreatif, dan inovatif.')
 @forelse ($cerpens as $cerpen)
 <div class="container-info">
     <div class="nft-details">
-        <h1>{{ $cerpen->judul }}</h1>
+        <h1> <a class="cerpen-title" href="{{ route('cerpen.show',$cerpen) }}">{{ $cerpen->judul }}</a></h1>
     </div>
     <div class="nft-description">
-        <small>{{ $cerpen->user->name }}</small>
+        <small>Posted By : {{ $cerpen->user->name }}</small>
         <p> {{ Str::limit($cerpen['keterangan'], 150) }}</p>
-        <a href="{{ route('cerpen.show',$cerpen) }}">Ke Post</a>
     </div>
 </div>
 @empty
