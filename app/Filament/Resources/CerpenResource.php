@@ -29,13 +29,16 @@ class CerpenResource extends Resource
                     ->default(fn() => auth()->user()->name),
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn() => auth()->id()),
+                Forms\Components\TextInput::make('writer')
+                    ->label('Penulis'),
+                Forms\Components\TextInput::make('class')
+                    ->label('Kelas'),
                 Forms\Components\Textarea::make('judul')
                     ->label('Judul Cerpen')
                     ->required()->live(onBlur: true)
                     ->afterStateUpdated(fn($state, callable $set) => $set('slug', \Str::slug($state)))
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('slug')
-                    ->readOnly()
+                Forms\Components\Hidden::make('slug')
                     ->required(),
                 Forms\Components\Textarea::make('keterangan')
                     ->label('Isi Cerpen')

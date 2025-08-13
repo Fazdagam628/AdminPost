@@ -4,8 +4,9 @@
 <div class="container-info">
     <h1> <a class="cerpen-title" href="{{ route('cerpen.index') }}">{{ $cerpen->judul }}</a></h1>
     <div class="nft-meta">
-        <span>Penulis: {{ $cerpen->user->name }}</span> |
-        <span>Views: {{ $cerpen->views }}</span> |
+        <span>Writed By : {{ $cerpen->writer }}</span> |
+        <span>Class : {{ $cerpen->class }}</span> |
+        <span>Views : {{ $cerpen->views }}</span> |
         <span>Diterbitkan: {{ \Carbon\Carbon::parse($cerpen->created_at)->format('d M Y') }}</span>
     </div>
 

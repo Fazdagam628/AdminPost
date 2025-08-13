@@ -20,6 +20,8 @@ class Cerpen extends Model
         'judul',
         'slug',
         'keterangan',
+        'writer',
+        'class',
     ];
     public function user()
     {

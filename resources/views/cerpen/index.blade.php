@@ -22,8 +22,9 @@ edukatif, kreatif, dan inovatif.')
         <h1> <a class="cerpen-title" href="{{ route('cerpen.show',$cerpen) }}">{{ $cerpen->judul }}</a></h1>
     </div>
     <div class="nft-description">
-        <small>Posted By : {{ $cerpen->user->name }}</small>
-        <p> {{ Str::limit($cerpen['keterangan'], 150) }}</p>
+        <small>Posted By : {{ $cerpen->user->name }}</small><br>
+        <small>Writed By : {{ $cerpen->writer}}</small>
+        <p style="color: #fff;"> {{ Str::limit($cerpen['keterangan'], 150) }}</p>
     </div>
 </div>
 @empty
