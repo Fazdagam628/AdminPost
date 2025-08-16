@@ -13,8 +13,9 @@ class AssetController extends Controller
     {
         $selectedCategory = $request->input('category');
         $search = $request->input('search');
+        $sort = $request->input('sort');
 
-        $assetsQuery = Asset::query()->latest();
+        $assetsQuery = Asset::query();
 
         if ($search) {
             // Ubah input ke uppercase
@@ -28,13 +29,28 @@ class AssetController extends Controller
         if ($selectedCategory) {
             $assetsQuery->whereJsonContains('category', $selectedCategory);
         }
+
+        // Sorting
+        switch ($sort) {
+            case 'oldest':
+                $assetsQuery->orderBy('created_at', 'asc');
+                break;
+            case 'az':
+                $assetsQuery->orderBy('name', 'asc');
+                break;
+            case 'za':
+                $assetsQuery->orderBy('name', 'desc');
+                break;
+            default: // newest
+                $assetsQuery->orderBy('created_at', 'desc');
+        }
         $assets = $assetsQuery->latest()->paginate(12)->appends($request->query());
         $allCategories = Asset::select('category')->get()
             ->flatMap(fn($asset) => collect($asset->category))
             ->unique()
             ->sort()
             ->values();
-        return view('assets.index', compact('assets', 'allCategories', 'selectedCategory'));
+        return view('assets.index', compact('assets', 'allCategories', 'selectedCategory','sort'));
     }
 
     public function show(Asset $asset): View

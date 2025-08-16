@@ -10,6 +10,7 @@
         <h1>{{ $game->name }}</h1>
         <div class="nft-meta">Posted by: {{ $game->creator }}</div>
         <div class="nft-meta">View: {{ $game->views }}</div>
+          <div class="nft-meta">Published: {{ \Carbon\Carbon::parse($game->created_at)->format('d M Y') }}</div>
         <div class="nft-actions">
             <a href="{{ $game->link_download }}" target="_blank"><button>Download</button></a>
         </div>

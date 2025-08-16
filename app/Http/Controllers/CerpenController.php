@@ -12,6 +12,7 @@ class CerpenController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $sort = $request->input('sort');
         $cerpensQuery = Cerpen::query();
         if ($search) {
             // Ubah input ke uppercase
@@ -25,10 +26,25 @@ class CerpenController extends Controller
                     ->orWhereRaw('UPPER(judul) LIKE ?', ["%$search%"]);
             });
         }
+
+        // Sorting
+        switch ($sort) {
+            case 'oldest':
+                $cerpensQuery->orderBy('created_at', 'asc');
+                break;
+            case 'az':
+                $cerpensQuery->orderBy('judul', 'asc');
+                break;
+            case 'za':
+                $cerpensQuery->orderBy('judul', 'desc');
+                break;
+            default: // newest
+                $cerpensQuery->orderBy('created_at', 'desc');
+        }
         // Ambil sekitar 10 data cerpen
         $cerpens = $cerpensQuery->latest()->paginate(5)->appends($request->query());
 
-        return view('cerpen.index', compact('cerpens'));
+        return view('cerpen.index', compact('cerpens','sort'));
     }
 
     public function show(Cerpen $cerpen): View

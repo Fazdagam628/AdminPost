@@ -25,8 +25,9 @@ class GameController extends Controller
     {
         $selectedCategory = $request->input('kategori');
         $search = $request->input('search');
+        $sort = $request->input('sort');
 
-        $gamesQuery = Game::query()->latest();
+        $gamesQuery = Game::query();
 
         if ($search) {
             // Ubah input ke uppercase
@@ -44,6 +45,21 @@ class GameController extends Controller
             $gamesQuery->whereJsonContains('kategori', ['kategori' => $selectedCategory]);
         }
 
+        // Sorting
+        switch ($sort) {
+            case 'oldest':
+                $gamesQuery->orderBy('created_at', 'asc');
+                break;
+            case 'az':
+                $gamesQuery->orderBy('name', 'asc');
+                break;
+            case 'za':
+                $gamesQuery->orderBy('name', 'desc');
+                break;
+            default: // newest
+                $gamesQuery->orderBy('created_at', 'desc');
+        }
+
         $games = $gamesQuery->latest()->paginate(12)->appends($request->query());
 
         $allCategories = Game::select('kategori')->get()
@@ -52,7 +68,7 @@ class GameController extends Controller
             ->sort()
             ->values();
 
-        return view('game.game', compact('games', 'allCategories', 'selectedCategory'));
+        return view('game.game', compact('games', 'allCategories', 'selectedCategory', 'sort'));
     }
 
 

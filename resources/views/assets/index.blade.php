@@ -27,8 +27,18 @@
                 </option>
                 @endforeach
             </select>
+        </div>
+        <div class="sort">
+            <select name="sort" id="sort">
+                <option value="">Sort By</option>
+                <option value="newest" {{ $sort == 'newest'? 'selected':'' }}>Newest</option>
+                <option value="oldest" {{ $sort == 'oldest'? 'selected':'' }}>Oldest</option>
+                <option value="az" {{ $sort == 'az'? 'selected':'' }}>Ascending</option>
+                <option value="za" {{ $sort == 'za'? 'selected':'' }}>Descending</option>
+
+            </select>
+        </div>
     </form>
-    </div>
     <div class="item-grid">
         @forelse ($assets as $asset)
 
@@ -84,6 +94,7 @@
         const searchInput = document.getElementById('searchInput');
         const resetButton = document.getElementById('resetButton');
         const kategoriSelect = document.getElementById('category');
+        const sortSelect = document.getElementById('sort');
         const form = document.getElementById('filterForm');
 
 
@@ -150,6 +161,9 @@
 
         // Auto-submit saat category dipilih
         kategoriSelect?.addEventListener('change', () => {
+            form.submit();
+        });
+        sortSelect?.addEventListener('change', () => {
             form.submit();
         });
     });

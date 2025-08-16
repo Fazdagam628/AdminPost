@@ -282,14 +282,13 @@ nav ul li a:hover::after {
     margin-bottom: 20px;
 }
 
-.filters {
-    display: flex;
-    flex-wrap: wrap;
+.filters,.sort {
+    display: inline-block;
     gap: 1rem;
     margin-bottom: 2rem;
 }
 
-.filters select {
+.filters select,.sort select {
     background: #1a1a1a;
     border: 1px solid #333;
     color: white;
@@ -652,7 +651,7 @@ nav ul li a {
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-}   
+}
 
 .map-container {
     flex: 1 1 50%;

@@ -10,6 +10,7 @@
         <h1>{{ $asset->name }}</h1>
         <div class="nft-meta">Posted by: {{ $asset->author }}</div>
         <div class="nft-meta">View: {{ $asset->views }}</div>
+        <div class="nft-meta">Published: {{ \Carbon\Carbon::parse($asset->created_at)->format('d M Y') }}</div>
         <div class="nft-description">
             {{ $asset->description }}
         </div>
