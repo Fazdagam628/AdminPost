@@ -35,6 +35,8 @@
                 <option value="oldest" {{ $sort == 'oldest'? 'selected':'' }}>Oldest</option>
                 <option value="az" {{ $sort == 'az'? 'selected':'' }}>Ascending</option>
                 <option value="za" {{ $sort == 'za'? 'selected':'' }}>Descending</option>
+                <option value="most_viewed" {{ $sort == 'most_viewed'? 'selected':'' }}>Most Viewed</option>
+                <option value="least_viewed" {{ $sort == 'least_viewed'? 'selected':'' }}>Least Viewed</option>
 
             </select>
         </div>

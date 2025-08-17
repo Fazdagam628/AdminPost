@@ -38,6 +38,12 @@ class CerpenController extends Controller
             case 'za':
                 $cerpensQuery->orderBy('judul', 'desc');
                 break;
+            case 'most_viewed':
+                $cerpensQuery->orderBy('views', 'desc');
+                break;
+            case 'least_viewed':
+                $cerpensQuery->orderBy('views', 'asc');
+                break;
             default: // newest
                 $cerpensQuery->orderBy('created_at', 'desc');
         }

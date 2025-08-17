@@ -41,6 +41,12 @@ class AssetController extends Controller
             case 'za':
                 $assetsQuery->orderBy('name', 'desc');
                 break;
+            case 'most_viewed':
+                $assetsQuery->orderBy('views', 'desc');
+                break;
+            case 'least_viewed':
+                $assetsQuery->orderBy('views', 'asc');
+                break;
             default: // newest
                 $assetsQuery->orderBy('created_at', 'desc');
         }
@@ -50,7 +56,7 @@ class AssetController extends Controller
             ->unique()
             ->sort()
             ->values();
-        return view('assets.index', compact('assets', 'allCategories', 'selectedCategory','sort'));
+        return view('assets.index', compact('assets', 'allCategories', 'selectedCategory', 'sort'));
     }
 
     public function show(Asset $asset): View

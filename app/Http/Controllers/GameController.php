@@ -56,6 +56,12 @@ class GameController extends Controller
             case 'za':
                 $gamesQuery->orderBy('name', 'desc');
                 break;
+            case 'most_viewed':
+                $gamesQuery->orderBy('views', 'desc');
+                break;
+            case 'least_viewed':
+                $gamesQuery->orderBy('views', 'asc');
+                break;
             default: // newest
                 $gamesQuery->orderBy('created_at', 'desc');
         }
