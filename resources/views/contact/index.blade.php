@@ -39,4 +39,38 @@
         </div>
     </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+    Swal.fire({
+        title: 'Success!',
+        text: "{{ session('success') }}",
+        color: ' #fff',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#b2d134ff',
+        background: '#1a1a1a',
+    })
+</script>
+@endif
+
+@if ($errors->any())
+<script>
+    Swal.fire({
+        title: 'Validation Error',
+        html: `
+            <ul style="text-align:left;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        `,
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33',
+    })
+</script>
+@endif
+
 @endsection

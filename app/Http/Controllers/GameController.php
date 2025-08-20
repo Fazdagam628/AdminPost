@@ -37,12 +37,14 @@ class GameController extends Controller
             $gamesQuery->where(function ($q) use ($search) {
                 $q->whereRaw('UPPER(name) LIKE ?', ["%$search%"])
                     ->orWhereRaw('UPPER(creator) LIKE ?', ["%$search%"])
-                    ->orWhereRaw('JSON_SEARCH(UPPER(JSON_EXTRACT(kategori, "$[*].kategori")), "one", ?) IS NOT NULL', [$search]);
+                    ->orWhereRaw('UPPER(kategori) LIKE ?', ["%$search%"]);
+                // ->orWhereRaw('JSON_SEARCH(UPPER(JSON_EXTRACT(kategori, "$[*].kategori")), "one", ?) IS NOT NULL', [$search]);
             });
         }
 
         if ($selectedCategory) {
-            $gamesQuery->whereJsonContains('kategori', ['kategori' => $selectedCategory]);
+            // $gamesQuery->whereJsonContains('kategori', ['kategori' => $selectedCategory]);
+            $gamesQuery->whereJsonContains('kategori', $selectedCategory);
         }
 
         // Sorting
@@ -69,7 +71,7 @@ class GameController extends Controller
         $games = $gamesQuery->latest()->paginate(12)->appends($request->query());
 
         $allCategories = Game::select('kategori')->get()
-            ->flatMap(fn($game) => collect($game->kategori)->pluck('kategori'))
+            ->flatMap(fn($game) => collect($game->kategori))
             ->unique()
             ->sort()
             ->values();

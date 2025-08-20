@@ -61,24 +61,42 @@ class GameResource extends Resource
                                             ->required()
                                             ->placeholder('Jelaskan fitur, gameplay, atau storyline game ini...')
                                             ->rows(5),
-                                        Forms\Components\Repeater::make('kategori')
-                                            ->label('Game Kategori (Multiple)')
-                                            ->schema([
-                                                Forms\Components\Textarea::make('kategori')
-                                                    ->label('kategori')
-                                                    ->placeholder('Tulis kategori game...')
-                                                    ->rows(3)
-                                                    ->extraInputAttributes(['onInput' => 'this.value = this.value.toUpperCase()'])
-                                                    ->required(),
-                                            ])
-                                            ->defaultItems(1)
-                                            ->minItems(1)
-                                            ->maxItems(20)
-                                            ->addActionLabel('Tambah Kategori')
-                                            ->columnSpanFull()
-                                            ->default([['kategori' => '']])
+                                        // Not use/Deprecated
+                                        // Forms\Components\Repeater::make('kategori')
+                                        //     ->label('Game Kategori (Multiple)')
+                                        //     ->schema([
+                                        //         Forms\Components\Textarea::make('kategori')
+                                        //             ->label('kategori')
+                                        //             ->placeholder('Tulis kategori game...')
+                                        //             ->rows(3)
+                                        //             ->extraInputAttributes(['onInput' => 'this.value = this.value.toUpperCase()'])
+                                        //             ->required(),
+                                        //     ])
+                                        //     ->defaultItems(1)
+                                        //     ->minItems(1)
+                                        //     ->maxItems(20)
+                                        //     ->addActionLabel('Tambah Kategori')
+                                        //     ->columnSpanFull()
+                                        //     ->default([['kategori' => '']])
+                                        //     ->required()
+                                        Forms\Components\TagsInput::make('kategori')
+                                            ->label('Genre Game')
+                                            ->placeholder('Tambahkan Kategori')
+                                            ->reorderable()
+                                            ->extraInputAttributes(['onInput' => 'this.value = this.value.toUpperCase()'])
+                                            ->suggestions(
+                                                Game::query()
+                                                    ->pluck('kategori')                  // ambil semua array kategori
+                                                    ->flatten()                          // jadikan 1 dimensi: ["FPS","3D",...]
+                                                    ->filter(fn($v) => filled($v))      // buang null/empty
+                                                    ->map(fn($v) => trim($v))           // trimming
+                                                    ->map(fn($v) => mb_strtoupper(trim($v)))
+                                                    ->unique()                           // hilangkan duplikat
+                                                    ->sort(fn($a, $b) => strcasecmp($a, $b)) // sort A-Z case-insensitive
+                                                    ->values()
+                                                    ->toArray()
+                                            )
                                             ->required()
-
                                     ]),
                             ])
                     ]),
@@ -170,9 +188,10 @@ class GameResource extends Resource
                     ->limit(50)
                     ->tooltip(fn($record) => $record->keterangan)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('kategori')
-                    ->label('Kategori')
-                    ->searchable(),
+                Tables\Columns\TagsColumn::make('kategori')
+                    ->label('Genre')
+                    ->separator(', ')
+                    ->limit(3), // hanya tampilkan 3, sisanya pakai "..."
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Gambar')
                     ->square(),
